@@ -1,0 +1,89 @@
+Given an unsorted array arr[] of size n, containing elements from the range 1 to n, it is known that one number in this range is missing, and another number occurs twice in the array, find both the duplicate number and the missing number.
+
+Examples:
+
+Input: arr[] = [2, 2]
+Output: [2, 1]
+Explanation: Repeating number is 2 and the missing number is 1.
+
+Input: arr[] = [1, 3, 3] 
+Output: [3, 2]
+Explanation: Repeating number is 3 and the missing number is 2.
+
+Input: arr[] = [4, 3, 6, 2, 1, 1]
+Output: [1, 5]
+Explanation: Repeating number is 1 and the missing number is 5.
+
+Constraints:
+2 ≤ n ≤ 106
+1 ≤ arr[i] ≤ n
+
+slov
+
+class Solution {
+    ArrayList<Integer> findTwoElement(int arr[]) {
+        int n = arr.length;
+        int rep = -1, missing = -1;
+
+        // Find repeating number by marking visited indices negative
+        for (int i = 0; i < n; i++) {
+            int x = Math.abs(arr[i]);
+
+            // If already negative → this index is visited → repeating number
+            if (arr[x - 1] < 0) {
+                rep = x;
+            } else {
+                arr[x - 1] = -arr[x - 1];
+            }
+        }
+
+        // Find missing number → index with positive value is missing
+        for (int i = 0; i < n; i++) {
+            if (arr[i] > 0) {
+                missing = i + 1;
+            }
+        }
+
+        ArrayList<Integer> ans = new ArrayList<>();
+        ans.add(rep);
+        ans.add(missing);
+
+        return ans;
+    }
+}
+
+'or yu ca try this but above one is good and more logical perect 
+import java.util.ArrayList;
+
+class Solution {
+    ArrayList<Integer> findTwoElement(int arr[]) {
+        int n = arr.length;
+
+        // Sum of first n natural numbers
+        long sN = (long) n * (n + 1) / 2;
+
+        // Sum of squares of first n natural numbers
+        long s2N = (long) n * (n + 1) * (2L * n + 1) / 6;
+
+        long s = 0, s2 = 0;
+        for (int num : arr) {
+            s += num;               // sum of array elements
+            s2 += (long) num * num; // sum of squares of array elements
+        }
+
+        // Difference between expected and actual sums
+        long val1 = s - sN;    // x - y
+        long val2 = s2 - s2N;  // x^2 - y^2
+
+        val2 = val2 / val1;    // (x^2 - y^2) / (x - y) = x + y
+
+        long x = (val1 + val2) / 2; // repeating number
+        long y = x - val1;           // missing number
+
+        ArrayList<Integer> result = new ArrayList<>();
+        result.add((int) x); // repeating number
+        result.add((int) y); // missing number
+
+        return result;
+    }
+}
