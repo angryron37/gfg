@@ -1,0 +1,35 @@
+import java.util.*;
+
+public class Main {
+    public static void main(String[] args) {
+        
+        int[] arr = {12, 3, 3, 4, 1, 4, 5, 12};
+
+        Map<Integer, Integer> freq = new HashMap<>();
+
+        for (int num : arr) {
+            String s = String.valueOf(num);
+            for (char ch : s.toCharArray()) {
+                int digit = ch - '0'; 
+                freq.put(digit, freq.getOrDefault(digit, 0) + 1);
+            }
+        }
+
+        List<Integer> keys = new ArrayList<>(freq.keySet());
+        Collections.sort(keys);
+
+        for (int key : keys) {
+            System.out.println(key + " occurs " + freq.get(key) + " times");
+        }
+    }
+}
+
+
+
+
+output
+1 occurs 3 times
+2 occurs 2 times
+3 occurs 2 times
+4 occurs 2 times
+5 occurs 1 times
